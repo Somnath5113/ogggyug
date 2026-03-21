@@ -1,0 +1,60 @@
+seed: 42
+
+classes:
+  - hindi
+  - bengali
+  - tamil
+  - telugu
+  - marathi
+  - punjabi
+  - malayalam
+
+data:
+  manifest: data/manifest.csv
+  splits_file: configs/splits.json
+  embeddings_dir: data/embeddings/
+  split_ratios:
+    train: 0.70
+    val: 0.10
+    calibration: 0.10
+    test: 0.10
+
+features:
+  wavlm_model_name: microsoft/wavlm-base-plus
+  wavlm_layer: -1
+  lang_id_model_name: speechbrain/lang-id-voxlingua107-ecapa
+  pooling: mean
+
+model:
+  hidden_dim: 256
+  dropout: 0.3
+  num_classes: 7
+
+train:
+  batch_size: 64
+  epochs: 30
+  lr: 0.0003
+  weight_decay: 0.00001
+  early_stopping_patience: 5
+  checkpoint_dir: checkpoints/
+
+calibration:
+  max_iter: 50
+  lr: 0.01
+
+gop:
+  contrasts:
+    - name: retroflex_vs_alveolar_t
+      phones: ["T", "t"]
+    - name: retroflex_vs_alveolar_d
+      phones: ["D", "d"]
+    - name: v_w_merger
+      phones: ["v", "w"]
+    - name: aspirated_vs_unaspirated_p
+      phones: ["ph", "p"]
+    - name: aspirated_vs_unaspirated_k
+      phones: ["kh", "k"]
+    - name: th_dental_substitution
+      phones: ["th", "t"]
+    - name: dh_dental_substitution
+      phones: ["dh", "d"]

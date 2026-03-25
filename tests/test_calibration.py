@@ -34,3 +34,10 @@ def test_high_confidence_error_rate_no_confident_predictions():
     probs = torch.tensor([[0.5, 0.5], [0.55, 0.45]])
     labels = torch.tensor([0, 1])
     assert high_confidence_error_rate(probs, labels, threshold=0.9) == 0.0
+
+
+def test_temperature_is_clamped_away_from_zero():
+    scaler = TemperatureScaler()
+    with torch.no_grad():
+        scaler.log_temperature.fill_(-50.0)  # would otherwise underflow to ~0
+    assert scaler.temperature.item() >= 1e-3

@@ -19,7 +19,9 @@ class TemperatureScaler(nn.Module):
 
     @property
     def temperature(self) -> torch.Tensor:
-        return self.log_temperature.exp()
+        # Clamp away from 0 to avoid a degenerate, near-infinitely-sharp
+        # softmax if LBFGS drives log_temperature to a large negative value.
+        return self.log_temperature.exp().clamp(min=1e-3)
 
     def forward(self, logits: torch.Tensor) -> torch.Tensor:
         return logits / self.temperature

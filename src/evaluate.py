@@ -68,6 +68,7 @@ def main():
     print(f"top-1 accuracy: {accuracy * 100:.1f}%")
     print(f"high-confidence wrong-prediction rate (raw): {raw_hce * 100:.1f}%")
     print(f"high-confidence wrong-prediction rate (calibrated): {calibrated_hce * 100:.1f}%")
+    print(f"fitted temperature: {scaler.temperature.item():.3f}")
 
 
 if __name__ == "__main__":

@@ -18,7 +18,9 @@ test set of **1,772 speakers**.
   are reproducible and not an artifact of the split.
 - **Confidence calibration**: raw softmax confidences were poorly calibrated.
   Temperature scaling (fit on a held-out calibration split) reduces the rate
-  of high-confidence wrong predictions from 28% to 10%.
+  of high-confidence wrong predictions from 28% to 10%. The fitted
+  temperature is clamped away from zero to avoid degenerate, pathologically
+  sharp softmax outputs.
 - **Phoneme-level pronunciation scoring**: a Goodness of Pronunciation (GOP)
   scorer evaluates 7 phoneme contrasts that are known markers of Indian
   English accents (e.g. retroflex vs. alveolar stops, /v/-/w/ merger).

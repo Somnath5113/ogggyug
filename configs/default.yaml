@@ -36,6 +36,7 @@ train:
   lr: 0.0003
   weight_decay: 0.00001
   early_stopping_patience: 5
+  early_stopping_min_delta: 0.001
   checkpoint_dir: checkpoints/
 
 calibration:

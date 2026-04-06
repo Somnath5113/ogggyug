@@ -23,7 +23,10 @@ def load_manifest(path: str) -> list[Utterance]:
         missing = required - set(reader.fieldnames or [])
         if missing:
             raise ValueError(f"manifest {path} is missing columns: {sorted(missing)}")
-        for row in reader:
+        for i, row in enumerate(reader):
+            for col in required:
+                if not row[col]:
+                    raise ValueError(f"manifest {path} row {i}: empty value for '{col}'")
             utterances.append(
                 Utterance(
                     audio_path=row["audio_path"],

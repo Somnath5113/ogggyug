@@ -24,6 +24,9 @@ def assign_speakers_to_splits(
     """Return {split_name: [speaker_id, ...]} with no speaker in more than one split."""
     if abs(sum(split_ratios.values()) - 1.0) > 1e-6:
         raise ValueError(f"split_ratios must sum to 1.0, got {split_ratios}")
+    negative = {name: r for name, r in split_ratios.items() if r < 0}
+    if negative:
+        raise ValueError(f"split_ratios must be non-negative, got {negative}")
 
     speakers = sorted({u.speaker_id for u in utterances})
     pinned_test_speakers = pinned_test_speakers or set()

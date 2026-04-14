@@ -15,6 +15,13 @@ class PhonemeSegment:
     start_sec: float
     end_sec: float
 
+    def __post_init__(self) -> None:
+        if self.end_sec <= self.start_sec:
+            raise ValueError(
+                f"PhonemeSegment for '{self.phone}' has end_sec <= start_sec "
+                f"({self.end_sec} <= {self.start_sec})"
+            )
+
 
 class ForcedAligner:
     """Interface for a forced aligner. Implementations must produce phoneme

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 
 from src.data.manifest import load_manifest
 from src.data.splits import assign_speakers_to_splits, save_splits
@@ -28,6 +29,10 @@ def main():
 
     pinned = set()
     if args.pinned_test_speakers:
+        if not os.path.exists(args.pinned_test_speakers):
+            raise FileNotFoundError(
+                f"--pinned-test-speakers file not found: {args.pinned_test_speakers}"
+            )
         with open(args.pinned_test_speakers) as f:
             pinned = set(json.load(f))
 

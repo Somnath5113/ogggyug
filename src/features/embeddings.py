@@ -17,6 +17,8 @@ class WavLMEmbedder:
     def __init__(self, model_name: str, layer: int = -1, pooling: str = "mean", device: str = "cpu"):
         from transformers import WavLMModel, Wav2Vec2FeatureExtractor
 
+        if pooling not in ("mean", "max"):
+            raise ValueError(f"unknown pooling: {pooling}")
         self.device = device
         self.layer = layer
         self.pooling = pooling

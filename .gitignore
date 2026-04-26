@@ -9,3 +9,6 @@ checkpoints/
 *.pt
 *.npy
 .DS_Store
+*.egg-info/
+build/
+dist/

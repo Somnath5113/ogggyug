@@ -15,6 +15,7 @@ def main():
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--out", required=True)
     parser.add_argument("--config", default="configs/default.yaml")
+    parser.add_argument("--device", default="cpu", help="e.g. cpu, cuda, cuda:0")
     args = parser.parse_args()
 
     import yaml
@@ -27,8 +28,9 @@ def main():
         config["features"]["wavlm_model_name"],
         layer=config["features"]["wavlm_layer"],
         pooling=config["features"]["pooling"],
+        device=args.device,
     )
-    lang_id = LanguageIDEmbedder(config["features"]["lang_id_model_name"])
+    lang_id = LanguageIDEmbedder(config["features"]["lang_id_model_name"], device=args.device)
 
     for utterance in tqdm(utterances, desc="extracting embeddings"):
         extract_and_cache(utterance.audio_path, args.out, wavlm, lang_id)

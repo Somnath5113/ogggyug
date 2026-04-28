@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from src.gop.aligner import PhonemeSegment
 from src.gop.scorer import AcousticPosteriorModel, gop_for_phone, score_contrasts
@@ -40,3 +41,8 @@ def test_score_contrasts_produces_result_per_matching_segment():
     assert len(results) == 1
     assert results[0].name == "retroflex_vs_alveolar_t"
     assert results[0].contrast_score > 0  # model favors the alveolar target
+
+
+def test_phoneme_segment_rejects_non_positive_duration():
+    with pytest.raises(ValueError):
+        PhonemeSegment(phone="t", start_sec=0.5, end_sec=0.5)

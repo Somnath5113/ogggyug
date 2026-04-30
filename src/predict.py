@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import os
 
+import numpy as np
 import torch
 import yaml
 
@@ -36,7 +37,7 @@ def main():
     wavlm_emb = wavlm.embed(waveform, sample_rate)
     lang_emb = lang_id.embed(waveform, sample_rate)
     embedding = torch.from_numpy(
-        __import__("numpy").concatenate([wavlm_emb, lang_emb], axis=-1)
+        np.concatenate([wavlm_emb, lang_emb], axis=-1)
     ).float().unsqueeze(0)
 
     model = AccentClassifier(

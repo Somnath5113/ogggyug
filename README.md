@@ -44,6 +44,15 @@ A separate, independent path runs the **GOP scorer** on forced-aligned
 phoneme boundaries to produce per-contrast pronunciation scores, used as
 supplementary diagnostic output rather than as classifier input.
 
+## Requirements
+
+```
+pip install -r requirements.txt
+```
+
+The language-ID embedder depends on `speechbrain`, which pulls in its own
+model checkpoint on first use.
+
 ## Repository layout
 
 ```

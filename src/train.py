@@ -101,6 +101,7 @@ def main():
 
     os.makedirs(config["train"]["checkpoint_dir"], exist_ok=True)
     best_val_acc, patience_left = 0.0, config["train"]["early_stopping_patience"]
+    min_delta = config["train"].get("early_stopping_min_delta", 0.0)
 
     for epoch in range(config["train"]["epochs"]):
         train_loss, train_acc = run_epoch(model, train_loader, optimizer, device)
@@ -109,7 +110,7 @@ def main():
             f"epoch {epoch:02d} | train loss {train_loss:.4f} acc {train_acc:.4f} "
             f"| val loss {val_loss:.4f} acc {val_acc:.4f}"
         )
-        if val_acc > best_val_acc:
+        if val_acc > best_val_acc + min_delta:
             best_val_acc = val_acc
             patience_left = config["train"]["early_stopping_patience"]
             torch.save(

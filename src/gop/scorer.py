@@ -65,7 +65,12 @@ def score_contrasts(
     and score both the target and the competing phone on those frames."""
     results = []
     for contrast in contrasts:
-        target_phone, competing_phone = contrast["phones"]
+        phones = contrast["phones"]
+        if len(phones) != 2:
+            raise ValueError(
+                f"contrast '{contrast.get('name', '?')}' must have exactly 2 phones, got {phones}"
+            )
+        target_phone, competing_phone = phones
         matching = [s for s in segments if s.phone == target_phone]
         if not matching:
             continue

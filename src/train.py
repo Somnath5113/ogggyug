@@ -64,7 +64,7 @@ def main():
         config = yaml.safe_load(f)
 
     torch.manual_seed(config["seed"])
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = config.get("device") or ("cuda" if torch.cuda.is_available() else "cpu")
 
     classes = config["classes"]
     class_to_idx = {c: i for i, c in enumerate(classes)}

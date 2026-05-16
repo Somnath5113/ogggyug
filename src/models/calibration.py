@@ -27,6 +27,12 @@ class TemperatureScaler(nn.Module):
         return logits / self.temperature
 
     def fit(self, logits: torch.Tensor, labels: torch.Tensor, lr: float = 0.01, max_iter: int = 50) -> float:
+        """Fits log_temperature via LBFGS on the given (logits, labels) batch.
+
+        Intended to be called once on the full calibration split (not
+        mini-batched), since LBFGS assumes a fixed objective across steps.
+        Returns the post-fit cross-entropy loss.
+        """
         optimizer = torch.optim.LBFGS([self.log_temperature], lr=lr, max_iter=max_iter)
 
         def closure():

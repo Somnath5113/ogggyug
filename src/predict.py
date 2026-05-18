@@ -19,6 +19,7 @@ def main():
     parser.add_argument("--audio", required=True)
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--config", default="configs/default.yaml")
+    parser.add_argument("--top-k", type=int, default=None, help="limit the printed distribution")
     args = parser.parse_args()
 
     with open(args.config) as f:
@@ -62,7 +63,8 @@ def main():
     print(f"predicted accent: {classes[predicted_idx]}")
     print(f"calibrated confidence: {probs[predicted_idx].item():.3f}")
     print("full distribution:")
-    for cls, p in sorted(zip(classes, probs.tolist()), key=lambda x: -x[1]):
+    ranked = sorted(zip(classes, probs.tolist()), key=lambda x: -x[1])
+    for cls, p in ranked[: args.top_k]:
         print(f"  {cls:12s} {p:.3f}")
 
 

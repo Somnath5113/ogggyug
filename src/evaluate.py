@@ -3,6 +3,7 @@ split and reports both raw and calibrated metrics."""
 from __future__ import annotations
 
 import argparse
+import json
 import os
 
 import torch
@@ -21,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
     parser.add_argument("--checkpoint", required=True)
+    parser.add_argument("--output-json", default=None, help="optional path to dump metrics as JSON")
     args = parser.parse_args()
 
     with open(args.config) as f:
@@ -69,6 +71,18 @@ def main():
     print(f"high-confidence wrong-prediction rate (raw): {raw_hce * 100:.1f}%")
     print(f"high-confidence wrong-prediction rate (calibrated): {calibrated_hce * 100:.1f}%")
     print(f"fitted temperature: {scaler.temperature.item():.3f}")
+
+    if args.output_json:
+        metrics = {
+            "test_speakers": len(splits["test"]),
+            "test_utterances": len(test_set),
+            "top1_accuracy": accuracy,
+            "high_confidence_error_rate_raw": raw_hce,
+            "high_confidence_error_rate_calibrated": calibrated_hce,
+            "temperature": scaler.temperature.item(),
+        }
+        with open(args.output_json, "w", encoding="utf-8") as f:
+            json.dump(metrics, f, indent=2)
 
 
 if __name__ == "__main__":

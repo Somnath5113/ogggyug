@@ -115,11 +115,11 @@ python scripts/extract_embeddings.py --manifest data/manifest.csv --out data/emb
 # 3. Train the classifier head + fit temperature scaling
 python -m src.train --config configs/default.yaml
 
-# 4. Evaluate on the held-out test split
-python -m src.evaluate --config configs/default.yaml --checkpoint checkpoints/best.pt
+# 4. Evaluate on the held-out test split (optionally dump metrics as JSON)
+python -m src.evaluate --config configs/default.yaml --checkpoint checkpoints/best.pt --output-json metrics.json
 
 # 5. Run inference (classification + calibrated confidence + GOP diagnostics) on one file
-python -m src.predict --audio path/to/clip.wav --checkpoint checkpoints/best.pt
+python -m src.predict --audio path/to/clip.wav --checkpoint checkpoints/best.pt --top-k 3
 ```
 
 ## Notes on methodology
